@@ -10,7 +10,7 @@
 <p id="social-title" class="description">Social media:</p>
 <div class="social-media">
 <a href="https://github.com/3nthusia5t"><img class="gh-social" src={gh_logo} alt="github"></a>
-<a href="mailto://3nthusiast@proton.me"><img class="email-social" src={email_logo} alt="3nthusiast@proton.me"></a>
+<a href="mailto:3nthusiast@proton.me"><img class="email-social" src={email_logo} alt="3nthusiast@proton.me"></a>
 </div>
 <div id="license">
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src={license}/></a>
