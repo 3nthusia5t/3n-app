@@ -53,7 +53,6 @@
   }
   // Fetch articles on mount
   onMount(async () => {
-    window.location.hash = "";
 
     try {
       const binData = await fetchArticles()
@@ -68,7 +67,7 @@
 
     //Essential to display tags related to article
     map_tags_to_uuid(tags, articles)
-    
+    return_behaviour()
     //Set up the return behaviour
     window.onpopstate = return_behaviour
   });
