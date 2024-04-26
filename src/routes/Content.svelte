@@ -7,7 +7,8 @@
   import { onMount } from "svelte";
   import Navigation from "./Navigation.svelte";
   import { fetchArticle, fetchArticles } from "$lib/article-api";
-  import { ArticleList, Article } from "$lib/model.pb"
+  import { Articles } from "$lib/model.pb"
+  //import { ArticleList, Article } from "$lib/article.pb"
   import {Pbf} from "$lib/pbf"
 
 
@@ -19,22 +20,27 @@
   function show_article(article) {
     fetchArticle(article) 
       .then(data => {
-              window.location.hash = article.uuid;
+              window.location.hash = article.friendly_url;
                 html = data
             })
   }
 
   function return_behaviour() {
-    if (this.window.location.hash === "") {
-        html = "";
+    if (window.location.hash === "") {
+      console.log("Im here")  
+      html = "";
         return;
       }
+      console.log(articles)
       for (let i = 0; i < articles.length; i++) {
-        let hashCheck = "#" + articles[i].uuid;
-        if (hashCheck === this.window.location.hash) {
+        let hashCheck = "#" + articles[i].friendly_url;
+        console.log(hashCheck)
+        console.log(window.location.hash === hashCheck)
+
+        if (hashCheck === window.location.hash) {
           fetchArticle(articles[i])
             .then(data => {
-                window.location.hash = articles[i].uuid;
+                window.location.hash = articles[i].friendly_url;
                 html = data
             })
         }
@@ -53,25 +59,24 @@
   }
   // Fetch articles on mount
   onMount(async () => {
-
+    
     try {
       const binData = await fetchArticles()
       const pbf = new Pbf(binData);
-      const obj = ArticleList.read(pbf);
+      const obj = Articles.read(pbf);
       articles = obj.listOfArticles;
 
       // Now you can use the obj or do further processing
     } catch (error) {
       console.error("Error:", error);
     }
-
     //Essential to display tags related to article
     map_tags_to_uuid(tags, articles)
-    return_behaviour()
     //Set up the return behaviour
     window.onpopstate = return_behaviour
+    console.log(articles)
+    return_behaviour()
   });
-
 </script>
 
 <div class="content">
@@ -102,6 +107,7 @@
     <Navigation bind:html articles={articles}/>
   {/if}
 </div>
+
 
 <style>
   /* General styling */
