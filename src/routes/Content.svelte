@@ -7,7 +7,7 @@
   import { onMount } from "svelte";
   import Navigation from "./Navigation.svelte";
   import { fetchArticle, fetchArticles } from "$lib/article-api";
-  import { ArticleList, Article } from "$lib/article.pb"
+  import { ArticleList, Article } from "$lib/model.pb"
   import {Pbf} from "$lib/pbf"
 
 
