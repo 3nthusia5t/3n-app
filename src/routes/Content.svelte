@@ -8,11 +8,13 @@
   import Navigation from "./Navigation.svelte";
   import { fetchArticle, fetchArticles } from "$lib/article-api";
   import { Articles } from "$lib/model.pb"
-  //import { ArticleList, Article } from "$lib/article.pb"
+
   import {Pbf} from "$lib/pbf"
 
 
   //Global values
+
+  //TODO consider hashmap instead of list
   let articles = [];
   let tags = {};
   let html = "";
