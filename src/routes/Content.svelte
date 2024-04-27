@@ -29,7 +29,6 @@
 
   function return_behaviour() {
     if (window.location.hash === "") {
-      console.log("Im here")  
       html = "";
         return;
       }
@@ -47,6 +46,11 @@
             })
         }
       }
+  }
+
+  function unix_to_date(timestamp) {
+    var date = new Date(timestamp*1000)
+    return date.toLocaleDateString("en-GB")
   }
 
   /**
@@ -76,10 +80,15 @@
     map_tags_to_uuid(tags, articles)
     //Set up the return behaviour
     window.onpopstate = return_behaviour
-    console.log(articles)
     return_behaviour()
+    console.log(articles[0])
   });
+
+
 </script>
+
+
+
 
 <div class="content">
   {#if html === ""}
@@ -94,6 +103,7 @@
         >
           <Title title={article.title} />
           <div class="tags">
+            <Tag color="var(--sDarkOrange)" name={unix_to_date(article.creation_timestamp)}/>
             {#each tags[article.uuid] as tag}
               <Tag name={tag} />
             {/each}
