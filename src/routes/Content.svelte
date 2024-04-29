@@ -7,11 +7,14 @@
   import { onMount } from "svelte";
   import Navigation from "./Navigation.svelte";
   import { fetchArticle, fetchArticles } from "$lib/article-api";
-  import { ArticleList, Article } from "$lib/article.pb"
+  import { Articles } from "$lib/model.pb"
+
   import {Pbf} from "$lib/pbf"
 
 
   //Global values
+
+  //TODO consider hashmap instead of list
   let articles = [];
   let tags = {};
   let html = "";
@@ -19,26 +22,35 @@
   function show_article(article) {
     fetchArticle(article) 
       .then(data => {
-              window.location.hash = article.uuid;
+              window.location.hash = article.friendly_url;
                 html = data
             })
   }
 
   function return_behaviour() {
-    if (this.window.location.hash === "") {
-        html = "";
+    if (window.location.hash === "") {
+      html = "";
         return;
       }
+      console.log(articles)
       for (let i = 0; i < articles.length; i++) {
-        let hashCheck = "#" + articles[i].uuid;
-        if (hashCheck === this.window.location.hash) {
+        let hashCheck = "#" + articles[i].friendly_url;
+        console.log(hashCheck)
+        console.log(window.location.hash === hashCheck)
+
+        if (hashCheck === window.location.hash) {
           fetchArticle(articles[i])
             .then(data => {
-                window.location.hash = articles[i].uuid;
+                window.location.hash = articles[i].friendly_url;
                 html = data
             })
         }
       }
+  }
+
+  function unix_to_date(timestamp) {
+    var date = new Date(timestamp*1000)
+    return date.toLocaleDateString("en-GB")
   }
 
   /**
@@ -53,26 +65,30 @@
   }
   // Fetch articles on mount
   onMount(async () => {
-
+    
     try {
       const binData = await fetchArticles()
       const pbf = new Pbf(binData);
-      const obj = ArticleList.read(pbf);
+      const obj = Articles.read(pbf);
       articles = obj.listOfArticles;
 
       // Now you can use the obj or do further processing
     } catch (error) {
       console.error("Error:", error);
     }
-
     //Essential to display tags related to article
     map_tags_to_uuid(tags, articles)
-    return_behaviour()
     //Set up the return behaviour
     window.onpopstate = return_behaviour
+    return_behaviour()
+    console.log(articles[0])
   });
 
+
 </script>
+
+
+
 
 <div class="content">
   {#if html === ""}
@@ -87,6 +103,7 @@
         >
           <Title title={article.title} />
           <div class="tags">
+            <Tag color="var(--sDarkOrange)" name={unix_to_date(article.creation_timestamp)}/>
             {#each tags[article.uuid] as tag}
               <Tag name={tag} />
             {/each}
@@ -102,6 +119,7 @@
     <Navigation bind:html articles={articles}/>
   {/if}
 </div>
+
 
 <style>
   /* General styling */
