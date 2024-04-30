@@ -32,12 +32,8 @@
       html = "";
         return;
       }
-      console.log(articles)
       for (let i = 0; i < articles.length; i++) {
         let hashCheck = "#" + articles[i].friendly_url;
-        console.log(hashCheck)
-        console.log(window.location.hash === hashCheck)
-
         if (hashCheck === window.location.hash) {
           fetchArticle(articles[i])
             .then(data => {
@@ -81,7 +77,6 @@
     //Set up the return behaviour
     window.onpopstate = return_behaviour
     return_behaviour()
-    console.log(articles[0])
   });
 
 
