@@ -8,6 +8,7 @@
     
     MutServerAddress.pathname = "/GetAllArticles"
     //console.log(MutServerAddress)
+    //test
     try {
       const response = await fetch(MutServerAddress.toString(), {
         method: "GET",
