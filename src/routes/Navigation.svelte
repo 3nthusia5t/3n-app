@@ -11,17 +11,17 @@
     
     function Home(){
       html = ""
-      window.location.hash = ""
+      window.location.pathname = ""
     }
 
     function Previous() {
           for (let i = 0; i < articles.length; i++) {
-            let hashCheck = "#" + articles[i].uuid;
-            if (hashCheck === window.location.hash) {
+            let hashCheck = articles[i].uuid;
+            if (hashCheck === window.location.pathname) {
               try {
               fetchArticle(articles[i+1])
               .then(data => {
-                    window.location.hash = articles[i].uuid;
+                    window.location.pathname = articles[i].uuid;
                     html = data
                     return 
                 })
@@ -34,12 +34,12 @@
   }
     function Next() {
           for (let i = 0; i < articles.length; i++) {
-            let hashCheck = "#" + articles[i].uuid;
-            if (hashCheck === window.location.hash) {
+            let hashCheck = articles[i].uuid;
+            if (hashCheck === window.location.pathname) {
               try {
               fetchArticle(articles[i-1])
               .then(data => {
-                    window.location.hash = articles[i].uuid;
+                    window.location.pathname = articles[i].uuid;
                     html = data
                     return 
                 })

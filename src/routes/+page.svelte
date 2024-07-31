@@ -6,9 +6,9 @@
 
   let article_clicked = false
   let is_mobile = false
-  window.addEventListener('hashchange', function (event) {
+  window.addEventListener('locationchange', function (event) {
   //console.log(window.location.hash)    
-  if (window.location.hash != "") {
+  if (window.location.pathname != "") {
     article_clicked = true
     } else {
       article_clicked = false
