@@ -12,34 +12,58 @@
   import {Pbf} from "$lib/pbf"
 
 
+  
   //Global values
+  let chosenArticle = {
+    isChosen: false,
+    article: null,
+    html: ""
+  }
 
   //TODO consider hashmap instead of list
   let articles = [];
   let tags = {};
-  let html = "";
+  //let html = "";
   let chosenIndex = 0;
   function show_article(article) {
     fetchArticle(article) 
       .then(data => {
-              window.location.hash = article.friendly_url;
-                html = data
+              window.location.pathname = article.friendly_url;
+                chosenArticle.html = data
             })
   }
 
+  function chooseArticle(article, data) {
+    chosenArticle = {
+      isChosen: true,
+      article: article,
+      html: data
+    }
+  }
+
+  function homepage() {
+    chosenArticle = {
+    isChosen: false,
+    article: null,
+    html: ""
+    }
+  }
+
+
   function return_behaviour() {
-    if (window.location.hash === "") {
-      html = "";
+    if (window.location.pathname === "") {
+        homepage()
         return;
       }
       for (let i = 0; i < articles.length; i++) {
-        let hashCheck = "#" + articles[i].friendly_url;
-        if (hashCheck === window.location.hash) {
+        let hashCheck =  articles[i].friendly_url;
+        if (hashCheck === window.location.pathname) {
           fetchArticle(articles[i])
             .then(data => {
-                window.location.hash = articles[i].friendly_url;
-                html = data
-            })
+                window.location.pathname = articles[i].friendly_url;
+                 chooseArticle(articles[i], data)
+
+                })
         }
       }
   }
@@ -49,10 +73,6 @@
     return date.toLocaleDateString("en-GB")
   }
 
-  /**
-   * @param {{ [x: string]: string[]; }} map
-   * @param {string | any[]} articles
-   */
   function map_tags_to_uuid(map, articles) {
     for (let i = 0; i < articles.length; i++) {
         let listOfTags = Tags2List(articles[i].tags);
@@ -79,14 +99,14 @@
     return_behaviour()
   });
 
-
+  console.log("Welcome to my Cybersecurity blog.")
 </script>
 
 
 
 
 <div class="content">
-  {#if html === ""}
+  {#if chosenArticle.html === ""}
     <div class="main-page">
       {#each articles as article}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -108,10 +128,16 @@
     </div>
   {:else}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="markdown-styling">
-      {@html html}
+    <div>
+
     </div>
-    <Navigation bind:html articles={articles}/>
+    <div>
+      
+    </div>
+    <div class="markdown-styling">
+      {@html chosenArticle.html}
+    </div>
+    <Navigation articles={articles}/>
   {/if}
 </div>
 
