@@ -25,7 +25,12 @@
 });
 </script>
 
-
+<svelte:head>
+	<title>3nthusiast</title>
+	<meta name="description" content="Windows and software security, cryptography and more!" />
+  <meta name="author" content="3nthusiast">
+  <meta name="keywords" content="cybersecurity, windows, software security">
+</svelte:head>
 <main>
 <div class="total">
   <!--Creating Sidebar-->

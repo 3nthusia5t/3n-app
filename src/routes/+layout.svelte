@@ -10,6 +10,7 @@
         --sText: #cccccc;
         --sViolet: #2a5573;
         --sDotted: #2a5573;
+        --sDarkOrange: #d36507;
 }
 </style>
 
